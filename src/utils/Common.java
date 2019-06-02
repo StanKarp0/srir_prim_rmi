@@ -1,6 +1,6 @@
 package utils;
 
-public class Tools {
+public class Common {
 
     private static final String host = "localhost";
     private static final String remoteName = "rmi://" + host + "/server_";

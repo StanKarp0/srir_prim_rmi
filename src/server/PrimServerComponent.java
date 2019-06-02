@@ -1,6 +1,6 @@
 package server;
 
-import utils.Tools;
+import utils.Common;
 
 import java.rmi.*;
 
@@ -14,7 +14,7 @@ public class PrimServerComponent {
         PrimRemoteImpl temp = new PrimRemoteImpl();
         //** Step 2
         //** Declare a string variable for holding the URL of the object's name
-        String rmiObjectName = Tools.getServerPath(remote);
+        String rmiObjectName = Common.getServerPath(remote);
         //Step 3
         //Binding the object reference to the object name.
         Naming.rebind(rmiObjectName, temp);

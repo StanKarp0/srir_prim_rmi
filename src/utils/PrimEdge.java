@@ -2,13 +2,13 @@ package utils;
 
 import java.io.Serializable;
 
-public class PrimResult implements Serializable {
+public class PrimEdge implements Serializable {
 
     private final int from;
     private final int to;
     private final int wage;
 
-    public PrimResult(int from, int to, int wage) {
+    public PrimEdge(int from, int to, int wage) {
 
         this.from = from;
         this.to = to;
@@ -29,10 +29,14 @@ public class PrimResult implements Serializable {
 
     @Override
     public String toString() {
-        return "PrimResult{" +
+        return "PrimEdge{" +
                 "from=" + from +
                 ", to=" + to +
                 ", wage=" + wage +
                 '}';
+    }
+
+    public String toCsvRow() {
+        return from + "," + to + "," + wage;
     }
 }

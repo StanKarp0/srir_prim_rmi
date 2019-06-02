@@ -2,7 +2,7 @@ package server;
 
 import client.PrimRemote;
 import utils.AdjMatrix;
-import utils.PrimResult;
+import utils.PrimEdge;
 
 import java.rmi.*;
 import java.rmi.server.*;
@@ -19,8 +19,7 @@ public class PrimRemoteImpl extends UnicastRemoteObject implements PrimRemote {
     }
 
     @Override
-    public PrimResult calculateMinimum(AdjMatrix matrix) throws RemoteException {
-
+    public PrimEdge calculateMinimum(AdjMatrix matrix) throws RemoteException {
         return matrix.calculateMinimum();
     }
 }
