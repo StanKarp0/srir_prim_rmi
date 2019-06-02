@@ -6,10 +6,9 @@ import utils.PrimEdge;
 import utils.Common;
 
 import java.rmi.*;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 public class PrimClientComponent {
 
@@ -50,37 +49,45 @@ public class PrimClientComponent {
 
     private static List<PrimEdge> primsAlgorithm(List<PrimPair> primPairs) throws RemoteException {
 
+        ExecutorService executor = Executors.newFixedThreadPool(primPairs.size());
         final int nodesNumber = primPairs.stream().mapToInt(p -> p.getAdjMatrix().getNodes()).sum();
         final List<PrimEdge> resultList = new LinkedList<>();
-
         int newNode = startNode;
+
         for (int edge = 0; edge < nodesNumber - 1; edge++) {
 
-            List<PrimEdge> results = new LinkedList<>();
-            for (PrimPair pair : primPairs) {
+            final int newIterNode = newNode;
+
+            Stream<Future<PrimEdge>> results = primPairs.stream().map(pair -> executor.submit(() -> {
                 AdjMatrix matrix = pair.getAdjMatrix();
                 // Update d table
-                matrix = pair.getRemote().updateDTable(newNode, matrix);
+                matrix = pair.getRemote().updateDTable(newIterNode, matrix);
                 // Calculate minimum
                 PrimEdge primEdge = pair.getRemote().calculateMinimum(matrix);
 
                 pair.setAdjMatrix(matrix);
-                if (primEdge != null) {
-                    results.add(primEdge);
-                }
-            }
+                return primEdge;
+            }));
 
-            Optional<PrimEdge> minWageOpt = results.stream().min(Comparator.comparingInt(PrimEdge::getWage));
+            Optional<PrimEdge> minWageOpt = results.map(f -> {
+                try {
+                    return f.get();
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }).filter(Objects::nonNull).min(Comparator.comparingInt(PrimEdge::getWage));
+
             if (minWageOpt.isPresent()) {
                 PrimEdge minWage = minWageOpt.get();
                 resultList.add(minWage);
                 newNode = minWage.getTo();
-
             } else {
                 throw new RuntimeException("Matrix error - cannot find next edge");
             }
 
         }
+        executor.shutdown();
 
         return resultList;
 
