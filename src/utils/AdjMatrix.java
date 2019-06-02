@@ -1,9 +1,10 @@
 package utils;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AdjMatrix {
+public class AdjMatrix implements Serializable {
 
     private final Map<Integer, Integer[]> wages;
 
@@ -38,4 +39,7 @@ public class AdjMatrix {
         return maps.stream().map(AdjMatrix::new).collect(Collectors.toList());
     }
 
+    public PrimResult calculateMinimum() {
+        return new PrimResult(0, 0, 0);
+    }
 }

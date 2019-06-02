@@ -1,19 +1,20 @@
 package server;
 
+import utils.Tools;
+
 import java.rmi.*;
-public class HelloServerComponent {
 
-
-    private static final String host = "localhost";
+public class PrimServerComponent {
 
     public static void main(String[] args) throws Exception {
+        int remote = Integer.parseInt(args[0]);
 
         //** Step 1
         //** Declare a reference for the object that will be implemented
-        HelloImplementation temp = new HelloImplementation();
+        PrimRemoteImpl temp = new PrimRemoteImpl();
         //** Step 2
         //** Declare a string variable for holding the URL of the object's name
-        String rmiObjectName = "rmi://" + host + "/Hello";
+        String rmiObjectName = Tools.getServerPath(remote);
         //Step 3
         //Binding the object reference to the object name.
         Naming.rebind(rmiObjectName, temp);
