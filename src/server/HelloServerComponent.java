@@ -1,7 +1,5 @@
 package server;
 
-import server.HelloImplementation;
-
 import java.rmi.*;
 public class HelloServerComponent {
 

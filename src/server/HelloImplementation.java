@@ -1,12 +1,12 @@
 package server;
 
-import client.IHello;
+import client.PrimRemote;
 
 import java.rmi.*;
 import java.rmi.server.*;
 
 public class HelloImplementation extends UnicastRemoteObject
-        implements IHello {
+        implements PrimRemote {
 
     public HelloImplementation() throws RemoteException {
 //There is no action need in this moment.
