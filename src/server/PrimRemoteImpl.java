@@ -1,7 +1,7 @@
 package server;
 
 import client.PrimRemote;
-import utils.AdjMatrix;
+import utils.AdjacencyList;
 import utils.PrimEdge;
 
 import java.rmi.*;
@@ -13,13 +13,13 @@ public class PrimRemoteImpl extends UnicastRemoteObject implements PrimRemote {
     public PrimRemoteImpl() throws RemoteException { }
 
     @Override
-    public AdjMatrix updateDTable(int newNode, AdjMatrix matrix) throws RemoteException {
-        matrix.addDoneNode(newNode);
-        return matrix;
+    public AdjacencyList updateDTable(int newNode, AdjacencyList list) throws RemoteException {
+        list.addDoneNode(newNode);
+        return list;
     }
 
     @Override
-    public PrimEdge calculateMinimum(AdjMatrix matrix) throws RemoteException {
-        return matrix.calculateMinimum();
+    public PrimEdge calculateMinimum(AdjacencyList list) throws RemoteException {
+        return list.calculateMinimum();
     }
 }

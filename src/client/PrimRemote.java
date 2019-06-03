@@ -1,6 +1,6 @@
 package client;
 
-import utils.AdjMatrix;
+import utils.AdjacencyList;
 import utils.PrimEdge;
 
 import java.rmi.*;
@@ -8,8 +8,8 @@ import java.rmi.*;
 
 public interface PrimRemote extends Remote {
 
-    AdjMatrix updateDTable(int newNode, AdjMatrix matrix) throws RemoteException;
+    AdjacencyList updateDTable(int newNode, AdjacencyList list) throws RemoteException;
 
-    PrimEdge calculateMinimum(AdjMatrix matrix) throws RemoteException;
+    PrimEdge calculateMinimum(AdjacencyList list) throws RemoteException;
 
 }

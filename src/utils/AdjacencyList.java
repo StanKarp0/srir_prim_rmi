@@ -4,13 +4,13 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class AdjMatrix implements Serializable {
+public class AdjacencyList implements Serializable {
 
     private final Map<Integer, Map<Integer, Integer>> wages;
     private final Set<Integer> done;
     private final Map<Integer, PrimEdge> dtable;
 
-    private AdjMatrix(Map<Integer, Map<Integer, Integer>> wages) {
+    private AdjacencyList(Map<Integer, Map<Integer, Integer>> wages) {
         this.wages = wages;
         this.done = new HashSet<>();
         this.dtable = new HashMap<>();
@@ -26,7 +26,7 @@ public class AdjMatrix implements Serializable {
         dtable.remove(nodeFrom);
 
         // iterate over every connection from new node - looking for better connection
-        // to another node. Node can not exist in this wage matrix.
+        // to another node. Node can not exist in this wage list.
         for (Map.Entry<Integer, Integer> entry : wages.getOrDefault(nodeFrom, new HashMap<>()).entrySet()) {
             int nodeTo = entry.getKey(), wage = entry.getValue();
             // check if node is already added to graph
@@ -66,7 +66,7 @@ public class AdjMatrix implements Serializable {
 
     @Override
     public String toString() {
-        return "AdjMatrix{" +
+        return "AdjacencyList{" +
                 "wages=" + wages +
                 ", done=" + done +
                 ", dtable=" + dtable +
@@ -79,9 +79,9 @@ public class AdjMatrix implements Serializable {
      * @param size number of remote servers
      * @return list of adj matrices
      */
-    public static List<AdjMatrix> fromStringList(List<String[]> list, int size) {
+    public static List<AdjacencyList> fromStringList(List<String[]> list, int size) {
 
-        List<Map<Integer, Map<Integer, Integer>>> maps = new ArrayList<>();
+        final List<Map<Integer, Map<Integer, Integer>>> maps = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             maps.add(new HashMap<>());
         }
@@ -96,6 +96,6 @@ public class AdjMatrix implements Serializable {
             maps.get(fromNode % size).get(fromNode).put(toNode, wage);
         });
 
-        return maps.stream().map(AdjMatrix::new).collect(Collectors.toList());
+        return maps.stream().map(AdjacencyList::new).collect(Collectors.toList());
     }
 }
